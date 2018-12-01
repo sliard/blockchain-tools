@@ -1,5 +1,7 @@
 package com.blockchain.tools;
 
+import org.bouncycastle.crypto.digests.RIPEMD160Digest;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -51,7 +53,7 @@ public class HashUtils {
      * @param length the number of bytes to hash
      * @return the hash
      */
-    public static byte[] hashSha256Twice(byte[] input, int offset, int length) {
+    public static byte[] applySha256Twice(byte[] input, int offset, int length) {
         MessageDigest digest = getSha256Digest();
         digest.update(input, offset, length);
         return digest.digest(digest.digest());
@@ -136,6 +138,17 @@ public class HashUtils {
         }
         // Return decoded data (including original number of leading zeros).
         return Arrays.copyOfRange(decoded, outputStart - zeros, decoded.length);
+    }
+
+    /**
+     * Computes the RIPEMD-160 hash of an array of bytes. Not instantiable.
+     */
+    public static byte[] applyRipemd160(byte[] input){
+        byte[] payload = new byte[20];
+        RIPEMD160Digest digest = new RIPEMD160Digest();
+        digest.update(input, 0, input.length);
+        digest.doFinal(payload, 0);
+        return payload;
     }
 
     /**
