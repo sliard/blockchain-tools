@@ -1,11 +1,15 @@
 package com.blockchain.tools;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class HashUtils {
 
-    public static final char[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray();
+    /**
+     * All data use for Base58
+     */
+    private static final char[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray();
     private static final char ENCODED_ZERO = ALPHABET[0];
     private static final int[] INDEXES = new int[128];
     static {
@@ -15,27 +19,44 @@ public class HashUtils {
         }
     }
 
-    public static byte[] hashSha256Twice(byte[] input, int offset, int length) {
+    /**
+     * Get a SHA-256 MessageDigest instance.
+     *
+     * @return a SHA-256 MessageDigest instance
+     */
+    private static MessageDigest getSha256Digest() {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(input, offset, length);
-            return digest.digest(digest.digest());
-        }
-        catch(Exception e) {
+            return MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Calculates the SHA-256 hash of the given byte array.
+     *
+     * @param input byte array to hash
+     * @return the hash
+     */
     public static byte[] applySha256(byte[] input){
-
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(input);
-        }
-        catch(Exception e) {
-            throw new RuntimeException(e);
-        }
+        MessageDigest digest = getSha256Digest();
+        return digest.digest(input);
     }
+
+    /**
+     * Calculates the SHA-256 hash of the given byte range.
+     *
+     * @param input byte array to hash
+     * @param offset the offset within the array of the bytes to hash
+     * @param length the number of bytes to hash
+     * @return the hash
+     */
+    public static byte[] hashSha256Twice(byte[] input, int offset, int length) {
+        MessageDigest digest = getSha256Digest();
+        digest.update(input, offset, length);
+        return digest.digest(digest.digest());
+    }
+
 
 
     /**
