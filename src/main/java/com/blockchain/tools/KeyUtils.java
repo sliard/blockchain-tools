@@ -39,6 +39,7 @@ public class KeyUtils {
             keyGen.initialize(ecSpec, random);
             return keyGen.generateKeyPair();
         } catch (Exception e) {
+            // RuntimeException because if bouncy castle library  is in your classpath that can't happen
             throw new RuntimeException(e);
         }
     }
@@ -78,9 +79,14 @@ public class KeyUtils {
         return ecPrivateKey;
     }
 
-
+    /**
+     * Create an ECPrivateKey from a private key in Wallet Import Format.
+     *
+     * @param wifPrivateKey private key in Wallet Import Format
+     * @return an ECPrivateKey
+     */
     public static ECPrivateKey privateKeyFromWIF(String wifPrivateKey) {
-        byte[] privateKeyBytes = HashUtils.base58Decode(wifPrivateKey);
+        byte[] privateKeyBytes = CoderUtils.base58Decode(wifPrivateKey);
         byte[] privateKeyWithoutChecksum = Arrays.copyOfRange(privateKeyBytes, 0, privateKeyBytes.length - 4);
         byte[] checksum = Arrays.copyOfRange(privateKeyBytes,  (privateKeyBytes.length - 4), privateKeyBytes.length);
         byte[] hashOfPrivateKey = HashUtils.applySha256Twice(privateKeyWithoutChecksum, 0, privateKeyWithoutChecksum.length);
@@ -118,7 +124,7 @@ public class KeyUtils {
      * @param privateKey - The private key in byte[] format
      * @return A String representation of the private key in Wallet Import Format
      */
-    public static String encodePrivateKeyToWIF (byte[] privateKey) {
+    public static String encodePrivateKeyToWIF(byte[] privateKey) {
         byte[] cleanPrivateKey;
         // If first byte of the private encryption key generated is zero, remove it.
         if (privateKey[0] == 0) {
@@ -139,9 +145,15 @@ public class KeyUtils {
         // Take the first 4 bytes of that hash as a checksum for the private
         // and add the checksum bytes onto the end of the private key with its extra byte
         System.arraycopy(checksum, 0, addressBytes, cleanPrivateKey.length + 1, 4);
-        return HashUtils.base58Encode(addressBytes);
+        return CoderUtils.base58Encode(addressBytes);
     }
 
+    /**
+     * Get a public key from a private key
+     *
+     * @param privateKey private key
+     * @return public key
+     */
     public static ECPublicKey getPublicKeyFromPrivate(ECPrivateKey privateKey) {
         try {
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM, PROVIDER);
@@ -158,6 +170,12 @@ public class KeyUtils {
         }
     }
 
+    /**
+     * Get a public ECDSA Key from ECPublicKey.
+     *
+     * @param pubicKey public key
+     * @return public ECDSA Key
+     */
     public static String getPublicKeyHexa(ECPublicKey pubicKey) {
         java.security.spec.ECPoint pt = pubicKey.getW();
         String sx = StringUtils.adjustTo64(pt.getAffineX().toString(16)).toUpperCase();

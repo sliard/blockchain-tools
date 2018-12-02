@@ -3,9 +3,9 @@ package com.blockchain.tools;
 public class AddressData {
 
     /**
-     * A bitcoin address
+     * An address
      */
-    public String bitcoinAddress;
+    public String address;
 
     /**
      * Public Key (130 characters [0-9A-F])

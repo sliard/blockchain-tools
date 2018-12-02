@@ -1,5 +1,7 @@
 package com.blockchain.tools;
 
+import java.util.Arrays;
+
 /**
  * All helper to manage String and byte[]
  */
@@ -34,13 +36,18 @@ public class StringUtils {
         return data;
     }
 
-    public static String adjustTo64(String s) {
-        switch(s.length()) {
-            case 62: return "00" + s;
-            case 63: return "0" + s;
-            case 64: return s;
+    /**
+     * Adjust the string size to have 64 characters length
+     * @param input hexadecimal key with maybe less than 64 characters
+     * @return a 64 length key
+     */
+    public static String adjustTo64(String input) {
+        switch(input.length()) {
+            case 62: return "00" + input;
+            case 63: return "0" + input;
+            case 64: return input;
             default:
-                throw new IllegalArgumentException("not a valid key: " + s);
+                throw new IllegalArgumentException("Key length error : " + input);
         }
     }
 }

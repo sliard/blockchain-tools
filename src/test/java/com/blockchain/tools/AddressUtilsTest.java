@@ -2,8 +2,6 @@ package com.blockchain.tools;
 
 import org.junit.Test;
 
-import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.ECPublicKey;
 
 public class AddressUtilsTest {
 
@@ -14,18 +12,10 @@ public class AddressUtilsTest {
 
         AddressData data = AddressUtils.generateBitcoinAddress();
 
-        System.out.println("Bitcoin Address : "+data.bitcoinAddress);
+        System.out.println("Bitcoin Address : "+data.address);
         System.out.println("Public Key : "+data.publicKey);
         System.out.println("Private Key : "+data.privateKey);
         System.out.println("Private Key WIF : "+data.privateKeyWIF);
     }
 
-    @Test
-    public void testDecodeWIF() {
-        ECPrivateKey key = KeyUtils.privateKeyFromWIF("5JyhHphaWwPcQMnZ14Vi4HkiRdhTt2wTA28vSDKEzFxQSn61qAW");
-
-        ECPublicKey publicKey = KeyUtils.getPublicKeyFromPrivate(key);
-
-        System.out.println("key = "+key);
-    }
 }
