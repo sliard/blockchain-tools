@@ -3,7 +3,7 @@ package com.blockchain.tools;
 public class AddressData {
 
     /**
-     * An address
+     * Address
      */
     public String address;
 

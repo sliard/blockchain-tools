@@ -12,7 +12,7 @@ public class KeyUtilsTest {
 
     @Test
     public void generateRandomKeyPairTest() {
-        // Just test no exception
+        // Just test exception
         KeyUtils.generateRandomKeyPair();
     }
 

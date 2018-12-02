@@ -44,8 +44,22 @@ public class AddressUtils {
         return getBitcoinAddressFromPublicKey(publicKeyHex, network);
     }
 
+    /**
+     * Check if the address checksum.
+     *
+     * @param address address to test
+     * @return true if the checksum is good
+     */
     public static boolean checkBitcoinAddress(String address) {
-        return false;
+        if (address.length() < 26 || address.length() > 35) {
+            return false;
+        }
+        byte[] decoded = CoderUtils.base58Decode(address);
+        if (decoded == null) {
+            return false;
+        }
+        byte[] hash = HashUtils.applySha256Twice(decoded, 0, 21);
+        return Arrays.equals(Arrays.copyOfRange(hash, 0, 4), Arrays.copyOfRange(decoded, 21, 25));
     }
 
     /**

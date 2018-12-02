@@ -1,7 +1,5 @@
 package com.blockchain.tools;
 
-import java.util.Arrays;
-
 /**
  * All helper to manage String and byte[]
  */
