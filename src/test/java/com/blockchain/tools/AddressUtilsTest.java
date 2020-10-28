@@ -2,9 +2,7 @@ package com.blockchain.tools;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class AddressUtilsTest {
@@ -69,6 +67,6 @@ public class AddressUtilsTest {
         assertTrue(AddressUtils.checkBitcoinAddress("3R2MPpTNQLCNs13qnHz89Rm82jQ27bAwft"));
         assertTrue(AddressUtils.checkBitcoinAddress("34QjytsE8GVRbUBvYNheftqJ5CHfDHvQRD"));
         assertTrue(AddressUtils.checkBitcoinAddress("3GsAUrD4dnCqtaTTUzzsQWoymHNkEFrgGF"));
-        assertTrue(AddressUtils.checkBitcoinAddress("3GsAUrD4dnCqtaTTUzzsQWoymHNkEFrgGF"));
+        assertTrue(AddressUtils.checkBitcoinAddress("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"));
     }
 }
